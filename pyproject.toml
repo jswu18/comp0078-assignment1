@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "comp0078_assignment1"
+version = "0.1.0"
+description = "Assignment for COMP0078 @ UCL"
+authors = ["James Wu <jian.wu.22@ucl.ac.uk>", "Alexei Pisacane <pisacane.alexei@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+# Core dependencies
+numpy="~1.23.4"
+scipy="~1.9.3"
+jax="~0.3.24"
+matplotlib="~3.6.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
