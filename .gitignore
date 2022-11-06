@@ -1,0 +1,19 @@
+# Virtualenvs
+.env/
+
+# Python
+__pycache__
+
+# IDE
+.idea
+
+# Notebook checkpoints
+*ipynb_checkpoints
+/**/*ipynb_checkpoints
+.DS_Store
+notebooks/.DS_Store
+
+# Other Latex outputs
+outputs/latex/main.log
+outputs/latex/main.out
+outputs/latex/main.synctex.gz

@@ -1,0 +1,140 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+
+\setlength{\droptitle}{-6em}
+
+% Enter the specific assignment number and topic of that assignment below, and replace "Your Name" with your actual name.
+
+\begin{document}
+\begin{enumerate}[leftmargin=\labelsep]
+\item[8.]
+
+\item[9.]
+    \begin{enumerate}
+        \item 
+        let $K_{c}(\textbf{x},\textbf{z}) = c+ \sum_{i=1}^{n}x_{i}z_{i} = c + \textbf{x}^{T}\textbf{z}$\\
+        Our function $K_{c}(\cdot, \cdot)$ is psd iff:\\
+        $\forall \{ u_{i} \}_{1:m} \in \mathcal{R},
+         \{ \textbf{x}_{j}\}_{1:m} \in \mathcal{R}^{n}$:
+       
+        $\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) \ge 0$
+        We expand our kernel function to give: \\
+        
+        \[\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) =  \sum_{n,m} cu_{n} u_{m} + \sum_{n,m} \langle\textbf{x}_{n}, \textbf{x}_{m}\rangle u_{n} u_{m}\]
+        
+        Here, we note that $\langle \cdot, \cdot \rangle$ is an inner product over the Hilbert space $\mathcal{R}^{n}$ and hence is psd by the representer theorem:
+                \begin{equation}
+        \implies \sum_{n,m} \langle\textbf{x}_{n},
+        \textbf{x}_{m}\rangle u_{n} u_{m} \ge 0 
+                \end{equation}
+                
+        \textbf{Proposition}
+        
+        $K_{c}(\cdot, \cdot)$ is psd iff $c \ge0$ 
+        
+        \textbf{Proof:}\\
+        $(\implies)$\\
+        
+        Suppose $c \ge 0$.
+        
+         $(1) \implies \sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) \ge c \sum_{n,m}u_{n}u_{m} = c (\sum_{n}u_{n})^{2} \ge 0$\\
+         
+        $(\impliedby)$\\
+        
+        let $c < 0$.
+        Suppose our vectors $x_{n}$ are identically equal to $ (\sqrt{a},0)^{T}$, for some $a < |c|/n \implies x_{k}^{T}x_{l} = a $\\
+        $\forall k,l$.\\
+        
+        $\implies \sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) = (a+c) \sum_{n,m}u_{n}u_{m} = (a + c)(\sum_{n}u_{n})^{2} < 0$\\
+        Hence for any $c < 0$, $
+        \exists \{ u_{i} \}_{1:m} \in \mathcal{R},
+         \{ \textbf{x}_{j}\}_{1:m} \in \mathcal{R}^{n}$s.t:\\
+           $\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) < 0
+        \square$
+    \item
+    Using this kernel in our ridge regression, we arrive at the following prediction function:
+    \\
+    \[\hat{y}_{test} = lc + \sum_{i} \alpha_{i} x_{i} \cdot x_{test} \]
+
+    where $\mathbf{\alpha} = ( K + \gamma l I_{l} + c 1_{nxn}) ^{-1} y_{train}$\\
+    Where $1_{nxn}$ is a matrix of all ones.\\
+    
+    We note that as c becomes large, $\alpha \to 0$ and hence the predictions for $\hat{y}_{test}$ approach    
+    the constant function $f(x) = lc$
+    \\
+    \newpage
+
+    \item
+    Define $g(t) := $sgn$(f(t)) = \frac{f(t)}{| f(t)|}$\\
+    \textbf{Proposition:}\\
+    
+    as $\beta \to \infty$, $g(t) \to 1-NN$\\
+    
+    \textbf{Proof:}\\
+    
+    $f(t) = \sum_{i} \alpha_{i} K(x_{i}, t)$, where $ \alpha = (K + \gamma I_{l})^{-1} y$\\
+    
+    since $K(x,x) = exp(0) = 1$ for  all x, we decompose K as follows:\\
+    
+    $K = I_{l} + \tilde{K}$, where $\tilde{K}_{ij} = K(x_i, x_j)$, $i \ne j$. We note here that as $\beta \to \infty$, $ \tilde{K} \to 0$.\\
+    
+    We take a taylor expansion in $\tilde{K}$, to arrive at the following result:\\
+    
+    $\alpha = ((\gamma+1) I_{l} + \tilde{K})^{-1} y = \frac{1}{\gamma + 1} (I_{l} - O(\tilde{K})) y $
+    Hence as $\beta \to \infty$, $\alpha \to \frac{1}{\gamma +1}y$\\
+    Hence our predictor function becomes:\\
+    $f(t) \to \frac{1}{\gamma+1} \sum_{i} y_{i} K(x_{i}, t) \implies g(t)  \to \frac{\sum_{i} y_{i} K(x_{i}, t)}{|\sum_{i} y_{i} K(x_{i}, t)|}
+    $\\
+
+    Let's assume that there exists a unique point x in our training set of minimal distance to our test point.\\
+    
+    Define $d_{i} := \|x_{test} - x_{i}\|^{2}$, and $d* := min_{i} d_{i}$\\
+    \\
+    $g(t) = \frac{y_{*} exp(-\beta d_{*})}{|\sum_{i} y_{i} exp(-\beta d_{i})|} + \sum_{i\ne *}\frac{y_{i} exp(-\beta d_{i})}{|\sum_{i} y_{i} exp(-\beta 
+    d_{i})|} = \frac{y_{*}}{|y_{*} + \sum_{i \ne *} y_{i} exp(-\beta (d_{i} - d_{*}))|} + \sum_{i\ne *}\frac{y_{i} exp(-\beta (d_{i} - d_{*}))}{|y_{*} + \sum_{i \ne *} y_{i} exp(-\beta (d_{i} - d_{*}))|}$.\\
+    
+    Note for $d_{i} \ne d_{*}$, $exp(-\beta(d_{i} - d_{*})) \to 0$ as $\beta \to \infty$. Hence:\\
+    $g(t) \to \frac{y_{*}}{|y_{*} + 0|} + \frac{0}{|y_{*} + 0|} = y_{*} = y_{i} : x_{i} = min_{i} \|x_{test} - x_{i}\|$ which is the required 1-NN predictor.\\$
+    \square$
+    \item
+    Given a whack-a-mole grid of size n, it is solvable if we can apply a sequence from our $n^{2}$ permissible moves that results in a blank screen. We first index all permissible moves by $T_{i,j}$, which has the effect of flipping the state of squares $(i,j),(i-1,j),(i+1,j),(i,j-1)(i,j+1)$, as long as each coordinate is still on the grid.\\
+    We may consider each grid as an element of the space of square matrices over $\mathcal{F}_{2}$, the finite field of order 2: under this construction, we see that the application of a move $T_{i,j}$ corresponds to the sum between the grid and a matrix $T_{ij}$, where $T_{ij}$, where the entries of $T_{ij}$ are zero everywhere except at $(i,j),(i-1,j),(i+1,j),(i,j-1)(i,j+1)$, if these values are present on the grid. For example, if n = 4, the transformation $T_{2,2}$ corresponds to the addition of the matrix $T_{22}$:\\
+    
+   $T_{22} = $ \begin{pmatrix}
+    0 & 1 & 0 & 0\\
+    1 & 1 & 1 & 0\\
+    0 & 1 & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    \end{pmatrix}
+    \\
+    Since our operations on a grid are now simply the sum of matrices over a $\mathcal{F}_{2}$, it is now immediately obvious that our operations are commutative, by the commutativity of addition.\\
+    
+    Further, since applying the same operation twice would be the same as applying the matrix twice in order, we can see that any operation applied twice would have the effect of applying no operation at all ( since $T_{ij} + T_{ij} = 0)$.\\
+    Hence, we conclude for $1 \le i,j \le n$, each operation is applied at most once. From this point, we note that there is no reason for our operations to be square matrices, as the only required properties of the space are those of a vector space (we make no use here of matrix multiplication). Hence, we may vectorise both our input grid and our operation matrices to get a set of vectors over $F_{2}^{n^2}$. We now index our operation vectors $t_i: i = 1, \dots, n^2$.\\
+    Let $x_{i} = \mathcal{I} [t_{i} $ is used $]$ be an indicator function representing whether $t_i$ is added to the input to get our blank grid.\\
+    We observe that our problem is solvable for a given input grid G (now vectorised as a vector \textbf{g}) iff there exists a vector \textbf{x} $\in \mathrm{F}_{2}^{n^2}$ st:\\
+    $\sum_{i} t_{i} x_{i} + \mathbf{g} = \mathbf{0}.$\\
+    If we stack the vectors $t_{i}$ horizontally as the columns of a matrix T, we get:\\
+    $T\mathbf{x} + \mathbf{g} = 0$\\
+    Since every element is its own additive inverse over $\mathcal{F}_{2}$, we add $\mathbf{g}$ to both sides and arrive at the linear system $T \mathbf{x} = \mathbf{g}$.\\
+    Since the matrix T may not be invertible in general, we perform gaussian elimination over $\mathcal{F}_{2}$, i.e create an augmented matrix $[T|\mathbf{g}]$ and reduce to row echelon form. If the problem is solvable, we will end up with a consistent (but perhaps underdetermined) reduced system of equations. If the input has no solution, the reduced system of equations will have some inconsistency in its variables: there will be some row of the reduced row echelon augmented matrix with all zeros to the left of the augmentation line, and a non-zero entry to the right of the augmentation line. \\
+    
+    Finally, we make a note of the time complexity of this algorithm: the creation of our matrix T can be performed in $O(n^{4})$ since we have $n^2$ operation grids of size $n^{2}$. Further, gaussian elimination can be performed in $O(n^{3})$ operations in any field, and hence our total running time is $O(n^3)$. \\
+    
+    Once we have determined whether a grid configuration is solvable, it remains to find a valid solution. We note that if a solution exists, then a least squares solver should find it. This operation should take $O(n^3)$ operations.
+    
+    
+    
+    
+    \end{enumerate}
+\item
+
+\end{enumerate}
+\end{document}
