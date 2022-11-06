@@ -66,7 +66,6 @@ def all_parts(
     )
     plt.title(figure_title)
     plt.xlabel("Number of Training Points (m)")
-    plt.ylabel("Optimal k Value")
+    plt.ylabel("Optimal k-Value")
     plt.xticks(number_of_train_points_vector)
-    plt.yticks(k_values)
     plt.savefig(figure_path)
