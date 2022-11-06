@@ -17,3 +17,4 @@ notebooks/.DS_Store
 outputs/latex/main.log
 outputs/latex/main.out
 outputs/latex/main.synctex.gz
+outputs/latex/main.aux
