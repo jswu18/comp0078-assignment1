@@ -36,7 +36,7 @@ def b(x, y, ks, table_path):
     w = np.zeros((len(ks), np.max(ks)))
     for i, k in enumerate(ks):
         w[i, :k] = weights[k].reshape(-1)
-    df = pd.DataFrame(w.T, columns=[f"{k=}" for k in ks])
+    df = pd.DataFrame(np.round(np.flip(w.T, axis=0), 2), columns=[f"{k=}" for k in ks])
     df.index = ["1"] + [f"x^{i}" for i in range(1, np.max(ks))]
     df.index.name = "Basis"
     df.to_csv(table_path)
