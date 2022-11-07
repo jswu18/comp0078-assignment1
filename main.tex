@@ -158,7 +158,10 @@
             \caption{Protocol B}
             \label{fig:8}
             \end{figure}
-        \item TODO
+        \item k-nearest neighbours is a non-parametric model, so when queried with a test point for prediction, the number of training points within a given fixed radius of that test point increases as the number of training points increases.
+        If we consider this fixed radius `sufficiently close' to make an informed prediction, the number of points within this radius will increase with more training points.
+        So as the number of training points increases, the optimal k would increase to include more of the training points within this same fixed radius.
+        We can see in the plot above that we see this general trend as expected, however there is considerable noise in the trend and so a smoother plot would likely requires more runs.
     \end{enumerate}
 \newpage
 \section{PART III}
