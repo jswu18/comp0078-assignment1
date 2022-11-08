@@ -1,2 +1,2 @@
-OUTPUTS_FOLDER = "outputs/python"
+OUTPUTS_FOLDER = "outputs"
 DEFAULT_SEED = 0

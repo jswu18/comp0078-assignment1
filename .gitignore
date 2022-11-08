@@ -14,7 +14,9 @@ __pycache__
 notebooks/.DS_Store
 
 # Other Latex outputs
-outputs/latex/main.log
-outputs/latex/main.out
-outputs/latex/main.synctex.gz
-outputs/latex/main.aux
+*.log
+*.out
+*.synctex.gz
+*.aux
+*.fls
+*.fdb_latexmk
