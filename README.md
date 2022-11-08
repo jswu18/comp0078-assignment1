@@ -2,7 +2,7 @@
 
 Assignment #1 for Supervised Learning (COMP0078) at UCL 2022
 
-To set up your python environemnt:
+To set up your python environment:
 
 1. Install `poetry`
 
