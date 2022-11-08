@@ -25,6 +25,7 @@ def _protocol_b(
     for i, number_of_train_points in enumerate(number_of_train_points_vector):
         for j, k_value in enumerate(k_values):
             for k in range(number_of_runs):
+                np.random.seed(seeds[i, j, k])
                 error[i, j, k] = run_experiment(
                     k_value,
                     v,
@@ -32,7 +33,6 @@ def _protocol_b(
                     number_of_real_points,
                     number_of_train_points,
                     number_of_test_points,
-                    seed=seeds[i, j, k],
                 )
     return error
 

@@ -21,6 +21,7 @@ def _protocol_a(
     )
     for i, k_value in enumerate(k_values):
         for j in range(number_of_runs):
+            np.random.seed(seeds[i, j])
             performance[i, j] = run_experiment(
                 k_value,
                 v,
@@ -28,7 +29,6 @@ def _protocol_a(
                 number_of_real_points,
                 number_of_train_points,
                 number_of_test_points,
-                seed=seeds[i, j],
             )
     return performance
 

@@ -143,9 +143,9 @@
             \label{fig:7}
             \end{figure}
         \item We know that the data generating process uses $v=3$, so we would have initially expected the smallest test error to be located at the matching k-value, $k=3$.
-        However, the data generating process for the training data set labels \textit{and} the testing data set labels were injected with noise, so k-values greater than 3 have a ``de-noising'' effect allowing for better performance at around $k=9$.
-        As the k-value increases beyond $k=9$, this smoothing effect is too strong, causing the gradual increase in test error as the k value increases.
-        For $k<9$ and in particular $k<v=3$ we see the error growing because the model has small $k$ and is able to fit to the noise injected into the data generating process, corrupting the model.
+        However, the data generating process for the training data set labels \textit{and} the testing data set labels were injected with noise, so k-values greater than 3 have a ``de-noising'' effect allowing for better performance at around $k=7$.
+        As the k-value increases beyond $k=7$, this smoothing effect is too strong, causing the gradual increase in test error as the k value increases.
+        For $k<7$ and in particular $k<v=3$ we see the error growing because the model has small $k$ and is able to fit to the noise injected into the data generating process, corrupting the model.
         By averaging over 100 runs, the plot is relatively smooth allowing us to make generalisations about the relationship between k-value and mean test set error.
     \end{enumerate}
 \newpage

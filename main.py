@@ -162,19 +162,19 @@ if __name__ == "__main__":
         os.makedirs(Q7_OUTPUT_FOLDER)
     v = 3
     n_dims = 2
-    # # actual params
-    # k_values = np.arange(1, 50)
-    # number_of_runs = 100
-    # number_of_real_points = 100
-    # number_of_train_points = 4000
-    # number_of_test_points = 1000
-
-    # testing params
+    # actual params
     k_values = np.arange(1, 50)
-    number_of_runs = 3
-    number_of_real_points = 10
-    number_of_train_points = 40
-    number_of_test_points = 10
+    number_of_runs = 100
+    number_of_real_points = 100
+    number_of_train_points = 4000
+    number_of_test_points = 1000
+
+    # # testing params
+    # k_values = np.arange(1, 50)
+    # number_of_runs = 3
+    # number_of_real_points = 10
+    # number_of_train_points = 40
+    # number_of_test_points = 10
 
     q7.all_parts(
         k_values,
@@ -194,19 +194,19 @@ if __name__ == "__main__":
         os.makedirs(Q8_OUTPUT_FOLDER)
     v = 3
     n_dims = 2
-    # # actual params
-    # k_values = np.arange(1, 50)
-    # number_of_runs = 100
-    # number_of_real_points = 100
-    # number_of_train_points_vector = np.concatenate((np.array([100]), np.arange(500, 4500, 500)))
-    # number_of_test_points = 1000
-
-    # test params
+    # actual params
     k_values = np.arange(1, 50)
-    number_of_runs = 3
-    number_of_real_points = 10
-    number_of_train_points_vector = np.arange(50, 110, 10)
-    number_of_test_points = 10
+    number_of_runs = 100
+    number_of_real_points = 100
+    number_of_train_points_vector = np.concatenate((np.array([100]), np.arange(500, 4500, 500)))
+    number_of_test_points = 1000
+
+    # # test params
+    # k_values = np.arange(1, 50)
+    # number_of_runs = 3
+    # number_of_real_points = 10
+    # number_of_train_points_vector = np.arange(50, 110, 10)
+    # number_of_test_points = 10
 
     q8.all_parts(
         k_values,

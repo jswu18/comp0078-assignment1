@@ -2,16 +2,12 @@ from typing import Tuple
 
 import numpy as np
 
-from src.constants import DEFAULT_SEED
-
-
 def get_p_h(
-    number_of_points: int, n_dims: int, seed: int = DEFAULT_SEED
+    number_of_points: int, n_dims: int
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     generate data for a voted-center hypothesis
     """
-    np.random.seed(seed)
     x = np.random.uniform(low=0, high=1, size=(number_of_points, n_dims))
     y = np.random.choice(a=[0, 1], size=number_of_points)
     return x, y
@@ -86,7 +82,6 @@ def generate_noisy_data(
     number_samples: int,
     v: int,
     n_dims: int,
-    seed: int = DEFAULT_SEED,
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     p_h: data for a voted-center hypothesis
@@ -96,7 +91,6 @@ def generate_noisy_data(
     return x and noisy labels
     """
     # generate x uniformly
-    np.random.seed(seed)
     x = np.random.uniform(low=0, high=1, size=(number_samples, n_dims))
     noisy_labels = _noisy_knn_prediction(train_data=p_h, test_points=x, k=v)
     return x, noisy_labels
@@ -109,9 +103,8 @@ def run_experiment(
     number_of_real_points,
     number_of_train_points,
     number_of_test_points,
-    seed,
 ):
-    p_h = get_p_h(number_of_real_points, n_dims, seed)
+    p_h = get_p_h(number_of_real_points, n_dims)
     data_train = generate_noisy_data(
         p_h, number_samples=number_of_train_points, v=v, n_dims=n_dims
     )

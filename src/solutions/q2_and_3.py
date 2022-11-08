@@ -14,8 +14,7 @@ def _g_sigma(x: np.ndarray, sigma: float) -> np.ndarray:
     return _g(x) + e
 
 
-def _g_noisy_samples(number_of_sample_points, sigma, seed=DEFAULT_SEED):
-    np.random.seed(seed)
+def _g_noisy_samples(number_of_sample_points, sigma):
     x_samples = np.random.uniform(low=0, high=1, size=(number_of_sample_points, 1))
     y_samples_noisy = _g_sigma(x_samples, sigma).reshape(-1, 1)
     return x_samples, y_samples_noisy
@@ -29,8 +28,9 @@ def _calculate_mse(
     np.random.seed(DEFAULT_SEED)
     seeds = np.random.randint(low=number_of_trials, size=(number_of_trials,))
     for i in range(number_of_trials):
+        np.random.seed(seeds[i])
         x_samples, y_samples_noisy = _g_noisy_samples(
-            number_of_sample_points, sigma, seed=seeds[i]
+            number_of_sample_points, sigma,
         )
         weights_dict = {}
         for base in bases:
@@ -79,6 +79,7 @@ def a_ii(
     plt.title(figure_title)
     plt.xlabel("x")
     plt.ylabel("y")
+    plt.ylim([-2.5, 2.5])
     plt.legend()
     plt.savefig(figure_path)
 
