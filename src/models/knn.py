@@ -2,9 +2,8 @@ from typing import Tuple
 
 import numpy as np
 
-def get_p_h(
-    number_of_points: int, n_dims: int
-) -> Tuple[np.ndarray, np.ndarray]:
+
+def get_p_h(number_of_points: int, n_dims: int) -> Tuple[np.ndarray, np.ndarray]:
     """
     generate data for a voted-center hypothesis
     """

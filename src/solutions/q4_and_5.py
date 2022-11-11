@@ -4,17 +4,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from jax import vmap
-
 from mpl_toolkits import mplot3d
 
 from src.models.helpers import mean_squared_error, train_test_split
 from src.models.regression_models import (
+    GaussianKernelRidgeRegression,
     MultipleLinearRegression,
     NaiveLinearRegression,
     RegressionModel,
     SingleLinearRegression,
-    GaussianKernelRidgeRegression
 )
+
 
 def _regression_report(models, x, y, iters):
     mse_results_test = np.zeros((iters, len(models)))
@@ -27,11 +27,16 @@ def _regression_report(models, x, y, iters):
             mse_results_test[i, j] = mean_squared_error(
                 model.fit_predict(x_train, y_train, x_test), y_test
             )
-            
+
             mse_results_train[i, j] = mean_squared_error(
                 model.predict(x_train), y_train
             )
-    return np.mean(mse_results_test, axis=0), np.std(mse_results_test, axis=0), np.mean(mse_results_train, axis=0), np.std(mse_results_train, axis=0)
+    return (
+        np.mean(mse_results_test, axis=0),
+        np.std(mse_results_test, axis=0),
+        np.mean(mse_results_train, axis=0),
+        np.std(mse_results_train, axis=0),
+    )
 
 
 def _make_folds(x, k):
@@ -64,7 +69,9 @@ def _gkrr_model_selection(x, y, gammas, sigmas, k):
     return gamma, sigma, mses
 
 
-def _regression_report_with_gkrr(models : List[RegressionModel], x, y, gammas, sigmas, iters):
+def _regression_report_with_gkrr(
+    models: List[RegressionModel], x, y, gammas, sigmas, iters
+):
     train_errors = np.zeros((iters, len(models) + 1))
     test_errors = train_errors.copy()
     for i in range(iters):
@@ -99,15 +106,18 @@ def all_parts(
     figure_path_test,
     gkrr_param_path,
     contour_path,
-    report_path):
-    
+    report_path,
+):
+
     x_train, y_train, x_test, y_test = train_test_split(x, y, 2 / 3)
 
     models: List[RegressionModel] = []
     models += [SingleLinearRegression(idx) for idx in range(12)]
     models += [NaiveLinearRegression(), MultipleLinearRegression()]
 
-    mses_test, stds_train, mses_train, mses_train = _regression_report(models, x_train, y_train, iters=20)
+    mses_test, stds_train, mses_train, mses_train = _regression_report(
+        models, x_train, y_train, iters=20
+    )
 
     axis_labels = data_columns[:12] + ["Naive", "MLR"]
     plt.figure(figsize=(15, 3))
@@ -123,28 +133,30 @@ def all_parts(
     plt.title(figure_title_train)
     plt.savefig(figure_path_train)
 
-    gammas = np.array([2**x for x in list(range(-40,-27))])
-    sigmas = 2**np.arange(7,13.5,0.5)
+    gammas = np.array([2**x for x in list(range(-40, -27))])
+    sigmas = 2 ** np.arange(7, 13.5, 0.5)
 
-    gamma,sigma, mses = _gkrr_model_selection(x = x_train,y = y_train, gammas = gammas, sigmas = sigmas, k = 5)   # type: ignore
-    GKRR_params = pd.DataFrame({'Optimal Gamma: ' : gamma, 'Optimal Sigma: ' : sigma, 'mse: ' : mses.min()}, index = [0])
-    GKRR_params.to_csv(gkrr_param_path, index = False)
+    gamma, sigma, mses = _gkrr_model_selection(x=x_train, y=y_train, gammas=gammas, sigmas=sigmas, k=5)  # type: ignore
+    GKRR_params = pd.DataFrame(
+        {"Optimal Gamma: ": gamma, "Optimal Sigma: ": sigma, "mse: ": mses.min()},
+        index=[0],
+    )
+    GKRR_params.to_csv(gkrr_param_path, index=False)
     fig = plt.figure()
-    ax = plt.axes(projection='3d')
+    ax = plt.axes(projection="3d")
     ax.contour3D(gammas, sigmas, mses)  # type: ignore
-    ax.set_xlabel('gamma')
-    ax.set_ylabel('sigma')
-    ax.set_zlabel('mse')  # type: ignore
+    ax.set_xlabel("gamma")
+    ax.set_ylabel("sigma")
+    ax.set_zlabel("mse")  # type: ignore
     plt.savefig(contour_path)
 
-    axis_labels += ['GKRR']
-    train_mse, train_std, test_mse,test_std = _regression_report_with_gkrr(models, x,y,gammas,sigmas,20)
+    axis_labels += ["GKRR"]
+    train_mse, train_std, test_mse, test_std = _regression_report_with_gkrr(
+        models, x, y, gammas, sigmas, 20
+    )
     df = pd.DataFrame(
-        [train_mse,train_std,test_mse,test_std],
-        columns =axis_labels,
-        index = ['Train mse', 'train std', 'test mse', 'test std']
-        ).T
+        [train_mse, train_std, test_mse, test_std],
+        columns=axis_labels,
+        index=["Train mse", "train std", "test mse", "test std"],
+    ).T
     df.to_csv(report_path)
-
-
-

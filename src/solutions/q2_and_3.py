@@ -30,7 +30,8 @@ def _calculate_mse(
     for i in range(number_of_trials):
         np.random.seed(seeds[i])
         x_samples, y_samples_noisy = _g_noisy_samples(
-            number_of_sample_points, sigma,
+            number_of_sample_points,
+            sigma,
         )
         weights_dict = {}
         for base in bases:

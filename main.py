@@ -1,15 +1,15 @@
 import os
 
+import jax
 import numpy as np
 import pandas as pd
-import jax
 
 from src.constants import OUTPUTS_FOLDER
 from src.models.helpers import phi_polynomial, phi_sin, train_test_split
 from src.solutions import q1, q2_and_3, q4_and_5, q6, q7, q8
 
 if __name__ == "__main__":
-    jax.config.update('jax_platform_name', 'cpu')
+    jax.config.update("jax_platform_name", "cpu")
 
     if not os.path.exists(OUTPUTS_FOLDER):
         os.makedirs(OUTPUTS_FOLDER)
@@ -125,7 +125,6 @@ if __name__ == "__main__":
     if not os.path.exists(Q4_OUTPUT_FOLDER):
         os.makedirs(Q4_OUTPUT_FOLDER)
 
-    
     if not os.path.exists(Q5_OUTPUT_FOLDER):
         os.makedirs(Q5_OUTPUT_FOLDER)
 
@@ -141,12 +140,11 @@ if __name__ == "__main__":
         figure_title_train="MSE Train",
         figure_title_test="MSE Test",
         figure_path_train=os.path.join(Q4_OUTPUT_FOLDER, "q4_train.png"),
-        figure_path_test =os.path.join(Q4_OUTPUT_FOLDER, "q4_test.png"),
-        gkrr_param_path = os.path.join(Q5_OUTPUT_FOLDER, 'optimal_gkrr_parameters.csv'),
-        contour_path = os.path.join(Q5_OUTPUT_FOLDER, 'contour_plot'),
-        report_path= os.path.join(Q5_OUTPUT_FOLDER, 'regression_report.csv')
+        figure_path_test=os.path.join(Q4_OUTPUT_FOLDER, "q4_test.png"),
+        gkrr_param_path=os.path.join(Q5_OUTPUT_FOLDER, "optimal_gkrr_parameters.csv"),
+        contour_path=os.path.join(Q5_OUTPUT_FOLDER, "contour_plot"),
+        report_path=os.path.join(Q5_OUTPUT_FOLDER, "regression_report.csv"),
     )  # type: ignore
-
 
     # Question 6
     Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
