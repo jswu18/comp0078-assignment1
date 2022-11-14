@@ -142,7 +142,7 @@ if __name__ == "__main__":
         figure_path_train=os.path.join(Q4_OUTPUT_FOLDER, "q4_train.png"),
         figure_path_test=os.path.join(Q4_OUTPUT_FOLDER, "q4_test.png"),
         gkrr_param_path=os.path.join(Q5_OUTPUT_FOLDER, "optimal_gkrr_parameters.csv"),
-        contour_path=os.path.join(Q5_OUTPUT_FOLDER, "contour_plot"),
+        contour_path=os.path.join(Q5_OUTPUT_FOLDER, "contour_plot.png"),
         report_path=os.path.join(Q5_OUTPUT_FOLDER, "regression_report.csv"),
     )  # type: ignore
 

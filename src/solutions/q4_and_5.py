@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from jax import vmap
-from mpl_toolkits import mplot3d
+import plotly.graph_objects as go
+import plotly.io as pio
 
 from src.models.helpers import mean_squared_error, train_test_split
 from src.models.regression_models import (
@@ -142,13 +143,26 @@ def all_parts(
         index=[0],
     )
     GKRR_params.to_csv(gkrr_param_path, index=False)
-    fig = plt.figure()
-    ax = plt.axes(projection="3d")
-    ax.contour3D(gammas, sigmas, mses)  # type: ignore
-    ax.set_xlabel("gamma")
-    ax.set_ylabel("sigma")
-    ax.set_zlabel("mse")  # type: ignore
-    plt.savefig(contour_path)
+
+
+    surface = go.Surface(x = np.log(gammas), y = np.log(sigmas), z=np.log(mses))
+    camera = dict(
+        up=dict(x=0, y=0, z=1),
+        center=dict(x=0, y=0, z=0),
+        eye=dict(x=1.25, y=1.25, z=1)
+    )
+    fig = go.Figure(data=surface)
+    fig.update_layout(scene_camera=camera)
+    pio.write_image(fig, contour_path, format='png')
+
+
+ #   fig = plt.figure()
+  #  ax = plt.axes(projection="3d")
+   # ax.contour3D(gammas, sigmas, mses)  # type: ignore
+   # ax.set_xlabel("gamma")
+   ## ax.set_ylabel("sigma")
+   # ax.set_zlabel("mse")  # type: ignore
+   # plt.savefig(contour_path)
 
     axis_labels += ["GKRR"]
     train_mse, train_std, test_mse, test_std = _regression_report_with_gkrr(
