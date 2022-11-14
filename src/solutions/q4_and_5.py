@@ -176,16 +176,8 @@ def all_parts(
     )
     fig = go.Figure(data=surface)
     fig.update_layout(scene_camera=camera)
-    pio.write_image(fig, contour_path, format='png')
-
-
- #   fig = plt.figure()
-  #  ax = plt.axes(projection="3d")
-   # ax.contour3D(gammas, sigmas, mses)  # type: ignore
-   # ax.set_xlabel("gamma")
-   ## ax.set_ylabel("sigma")
-   # ax.set_zlabel("mse")  # type: ignore
-   # plt.savefig(contour_path)
+    fig.write_image(contour_path)
+   # pio.write_image(fig, contour_path, format='png')
 
     axis_labels += ["GKRR"]
     train_mse, train_std, test_mse, test_std = _regression_report_with_gkrr(
@@ -197,3 +189,4 @@ def all_parts(
         index=["train mse", "train std", "test mse", "test std"],
     ).T
     df.to_csv(report_path)
+
