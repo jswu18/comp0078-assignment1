@@ -74,27 +74,33 @@ class MultipleLinearRegression(RegressionModel):
 
 
 class GaussianKernelRidgeRegression(RegressionModel):
-    def __init__(self, gamma, sigma):
-        self.coefficients = None
-        self.gamma = gamma
-        self.sigma = sigma
-        self.x_train = None
+    def __init__(self, gamma: float, sigma: float):
+        self.coefficients: np.ndarray = None  # (N_train ,1)
+        self.gamma: float = gamma
+        self.sigma: float = sigma
+        self.x_train: np.ndarray = None
         super().__init__()
 
     @staticmethod
     def k(x, y, sigma):
-        return jnp.exp(-jnp.linalg.norm(x - y) / sigma)
+        return jnp.exp(-(x - y).T@(x - y) / (2*sigma**2))
 
     def gram(self, x1, x2):
+        """
+
+        :param x1: (N_train, D)
+        :param x2: (N_train, D)
+        :return: (N_train, N_train)
+        """
         return vmap(lambda x: vmap(lambda y: self.k(x, y, self.sigma))(x2))(x1)
 
     def fit(self, x_train, y_train):
         n = x_train.shape[0]
-        self.coefficients = jnp.linalg.lstsq(
+        self.coefficients, residual, _, _ = jnp.linalg.lstsq(
             self.gram(x_train, x_train) + self.gamma * n * jnp.identity(n),
             y_train,
             rcond=None,
-        )[0]
+        )
         self.x_train = x_train
 
     def predict(self, x_test):
