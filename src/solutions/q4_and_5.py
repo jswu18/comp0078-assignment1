@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from jax import vmap
 
-from mpl_toolkits import mplot3d
 
 from src.models.helpers import mean_squared_error, train_test_split
 from src.models.regression_models import (
@@ -15,6 +14,9 @@ from src.models.regression_models import (
     SingleLinearRegression,
     GaussianKernelRidgeRegression
 )
+
+import plotly.graph_objects as go
+
 
 def _regression_report(models, x, y, iters):
     mse_results_test = np.zeros((iters, len(models)))
@@ -129,12 +131,14 @@ def all_parts(
     gamma,sigma, mses = _gkrr_model_selection(x = x_train,y = y_train, gammas = gammas, sigmas = sigmas, k = 5)   # type: ignore
     GKRR_params = pd.DataFrame({'Optimal Gamma: ' : gamma, 'Optimal Sigma: ' : sigma, 'mse: ' : mses.min()}, index = [0])
     GKRR_params.to_csv(gkrr_param_path, index = False)
-    fig = plt.figure()
-    ax = plt.axes(projection='3d')
-    ax.contour3D(gammas, sigmas, mses)  # type: ignore
-    ax.set_xlabel('gamma')
-    ax.set_ylabel('sigma')
-    ax.set_zlabel('mse')  # type: ignore
+    surface = go.Surface(x = np.log(gammas), y = np.log(sigmas), z=np.log(mses))
+    camera = dict(
+        up=dict(x=0, y=0, z=1),
+        center=dict(x=0, y=0, z=0),
+        eye=dict(x=1.25, y=1.25, z=1)
+    )
+    fig = go.Figure(data=surface)
+    fig.update_layout(scene_camera=camera)
     plt.savefig(contour_path)
 
     axis_labels += ['GKRR']
