@@ -46,27 +46,50 @@ def _make_folds(x, k):
     return splits
 
 
-def _evaluate_mse_gkrr(gamma, sigma, x_train, y_train, x_test, y_test):
+def _evaluate_mse_gkrr(gamma: float, sigma: float, x_train: np.ndarray, y_train: np.ndarray, x_test: np.ndarray, y_test: np.ndarray):
+    """
+
+    :param gamma: gamma value
+    :param sigma: sigma value
+    :param x_train: (N_train, D)
+    :param y_train: (N_train, )
+    :param x_test: (N_test, D)
+    :param y_test:(N_test, )
+    :return:
+    """
     model = GaussianKernelRidgeRegression(gamma, sigma)
     predictions = model.fit_predict(x_train=x_train, y_train=y_train, x_test=x_test)
     return mean_squared_error(predictions, y_test)
 
 
-def _gkrr_model_selection(x, y, gammas, sigmas, k):
-    mses = np.zeros((len(sigmas), len(gammas), k))
-    folds = _make_folds(x, k)
+def _gkrr_model_selection(
+        x: np.ndarray,
+        y: np.ndarray,
+        gammas: np.ndarray,
+        sigmas: np.ndarray,
+        k: int
+):
+    """
+
+    :param x: (N, D)
+    :param y: (N, )
+    :param gammas: (G, )
+    :param sigmas: (S, )
+    :param k: int
+    :return:
+    """
+    mses = np.zeros((len(sigmas), len(gammas), k)) # (S, G, k)
+    folds: List[np.ndarray] = _make_folds(x, k)
     for idx, split in enumerate(folds):
-        x_tr, y_tr, x_val, y_val = x[~split, :], y[~split], x[split, :], y[split]
+        x_tr, y_tr, x_val, y_val = np.delete(x, split, axis=0), np.delete(y, split, axis=0), x[split, :], y[split]
         mses[:, :, idx] = vmap(
-            lambda x_: vmap(
-                lambda y_: _evaluate_mse_gkrr(y_, x_, x_tr, y_tr, x_val, y_val)
+            lambda sigma_i: vmap(
+                lambda gamma_j: _evaluate_mse_gkrr(gamma_j, sigma_i, x_tr, y_tr, x_val, y_val)
             )(gammas)
         )(sigmas)
     mses = np.mean(mses, axis=2)
     best_sigma_idx, best_gamma_idx = np.unravel_index(mses.argmin(), mses.shape)
-    gamma = gammas[best_gamma_idx]
-    sigma = sigmas[best_sigma_idx]
-    return gamma, sigma, mses
+    return gammas[best_gamma_idx], sigmas[best_sigma_idx], mses
 
 
 def _regression_report_with_gkrr(
@@ -115,7 +138,7 @@ def all_parts(
     models += [SingleLinearRegression(idx) for idx in range(12)]
     models += [NaiveLinearRegression(), MultipleLinearRegression()]
 
-    mses_test, stds_train, mses_train, mses_train = _regression_report(
+    mses_test, _, mses_train, _ = _regression_report(
         models, x_train, y_train, iters=20
     )
 
@@ -157,6 +180,6 @@ def all_parts(
     df = pd.DataFrame(
         [train_mse, train_std, test_mse, test_std],
         columns=axis_labels,
-        index=["Train mse", "train std", "test mse", "test std"],
+        index=["train mse", "train std", "test mse", "test std"],
     ).T
     df.to_csv(report_path)
