@@ -155,6 +155,7 @@ def abc(
     average_mses = np.mean(mses[0], axis=-1)
     plt.figure()
     plt.imshow(np.log(average_mses))
+    plt.colorbar()
     plt.xticks(
         np.arange(len(log_2_gammas)),
         labels=log_2_gammas.reshape(-1),

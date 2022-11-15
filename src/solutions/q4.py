@@ -2,10 +2,7 @@ import numpy as np
 import pandas as pd
 
 from src.models.helpers import mean_squared_error, split_train_test_data
-from src.models.regression import (
-    LinearRegression,
-    NaiveRegression,
-)
+from src.models.regression import LinearRegression, NaiveRegression
 
 PERFORMANCE_COLUMN_NAMES = [
     "Model",

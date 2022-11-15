@@ -4,8 +4,8 @@ import jax
 import numpy as np
 import pandas as pd
 
-from src.constants import OUTPUTS_FOLDER, DATA_FOLDER, DEFAULT_SEED
-from src.models.helpers import phi_polynomial, phi_sin, split_train_test_data
+from src.constants import DATA_FOLDER, DEFAULT_SEED, OUTPUTS_FOLDER
+from src.models.helpers import phi_polynomial, phi_sin
 from src.solutions import q1, q2_and_3, q4, q5, q6, q7, q8
 
 if __name__ == "__main__":
@@ -39,6 +39,7 @@ if __name__ == "__main__":
     number_of_sample_points = 30
     sigma = 0.07
     ks = np.array([2, 5, 10, 14, 18])
+    np.random.seed(DEFAULT_SEED)
     q2_and_3.a_i(
         number_of_sample_points,
         sigma,
@@ -139,94 +140,80 @@ if __name__ == "__main__":
         performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5c-performance.csv"),
         mse_figure_path=os.path.join(Q5_OUTPUT_FOLDER, "q5b-cross-valid-error.png"),
     )
-    # q5.d(
-    #     df,
-    #     feature_columns,
-    #     target_column,
-    #     train_percentage,
-    #     number_of_runs=20,
-    #     number_of_folds=5,
-    #     log_2_gammas=np.arange(-40, -25),
-    #     log_2_sigmas=np.arange(7, 13.5, 0.5),
-    #     q4_performance_csv_path=q4_performance_csv_path,
-    #     performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5d-performance.csv"),
-    # )
+    q5.d(
+        df,
+        feature_columns,
+        target_column,
+        train_percentage,
+        number_of_runs=20,
+        number_of_folds=5,
+        log_2_gammas=np.arange(-40, -25),
+        log_2_sigmas=np.arange(7, 13.5, 0.5),
+        q4_performance_csv_path=q4_performance_csv_path,
+        performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5d-performance.csv"),
+    )
 
-    # # Question 6
-    # Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
-    # if not os.path.exists(Q6_OUTPUT_FOLDER):
-    #     os.makedirs(Q6_OUTPUT_FOLDER)
-    # number_of_points = 100
-    # v = 3
-    # n_dims = 2
-    # q6.all_parts(
-    #     number_of_points,
-    #     v,
-    #     n_dims,
-    #     figure_title=f"Question 6: h_(S={number_of_points},{v=})",
-    #     figure_path=os.path.join(Q6_OUTPUT_FOLDER, "q6.png"),
-    # )
+    # Question 6
+    Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
+    if not os.path.exists(Q6_OUTPUT_FOLDER):
+        os.makedirs(Q6_OUTPUT_FOLDER)
+    number_of_points = 100
+    v = 3
+    n_dims = 2
+    q6.all_parts(
+        number_of_points,
+        v,
+        n_dims,
+        figure_title=f"Question 6: h_(S={number_of_points},{v=})",
+        figure_path=os.path.join(Q6_OUTPUT_FOLDER, "q6.png"),
+    )
 
     # Question 7
-    # Q7_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q7")
-    # if not os.path.exists(Q7_OUTPUT_FOLDER):
-    #     os.makedirs(Q7_OUTPUT_FOLDER)
-    # v = 3
-    # n_dims = 2
-    # # actual params
-    # k_values = np.arange(1, 50)
-    # number_of_runs = 100
-    # number_of_real_points = 100
-    # number_of_train_points = 4000
-    # number_of_test_points = 1000
+    Q7_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q7")
+    if not os.path.exists(Q7_OUTPUT_FOLDER):
+        os.makedirs(Q7_OUTPUT_FOLDER)
+    v = 3
+    n_dims = 2
+    k_values = np.arange(1, 50)
+    number_of_runs = 100
+    number_of_real_points = 100
+    number_of_train_points = 4000
+    number_of_test_points = 1000
 
-    # # # testing params
-    # # k_values = np.arange(1, 50)
-    # # number_of_runs = 3
-    # # number_of_real_points = 10
-    # # number_of_train_points = 40
-    # # number_of_test_points = 10
+    q7.all_parts(
+        k_values,
+        v,
+        n_dims,
+        number_of_runs,
+        number_of_real_points,
+        number_of_train_points,
+        number_of_test_points,
+        figure_title="Question 7: Protocol A",
+        figure_path=os.path.join(Q7_OUTPUT_FOLDER, "q7.png"),
+    )
 
-    # q7.all_parts(
-    #     k_values,
-    #     v,
-    #     n_dims,
-    #     number_of_runs,
-    #     number_of_real_points,
-    #     number_of_train_points,
-    #     number_of_test_points,
-    #     figure_title="Question 7: Protocol A",
-    #     figure_path=os.path.join(Q7_OUTPUT_FOLDER, "q7.png"),
-    # )
+    # Question 8
+    Q8_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q8")
+    if not os.path.exists(Q8_OUTPUT_FOLDER):
+        os.makedirs(Q8_OUTPUT_FOLDER)
+    v = 3
+    n_dims = 2
+    k_values = np.arange(1, 50)
+    number_of_runs = 100
+    number_of_real_points = 100
+    number_of_train_points_vector = np.concatenate(
+        (np.array([100]), np.arange(500, 4500, 500))
+    )
+    number_of_test_points = 1000
 
-    # # Question 8
-    # Q8_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q8")
-    # if not os.path.exists(Q8_OUTPUT_FOLDER):
-    #     os.makedirs(Q8_OUTPUT_FOLDER)
-    # v = 3
-    # n_dims = 2
-    # # actual params
-    # k_values = np.arange(1, 50)
-    # number_of_runs = 100
-    # number_of_real_points = 100
-    # number_of_train_points_vector = np.concatenate((np.array([100]), np.arange(500, 4500, 500)))
-    # number_of_test_points = 1000
-
-    # # # test params
-    # # k_values = np.arange(1, 50)
-    # # number_of_runs = 3
-    # # number_of_real_points = 10
-    # # number_of_train_points_vector = np.arange(50, 110, 10)
-    # # number_of_test_points = 10
-
-    # q8.all_parts(
-    #     k_values,
-    #     v,
-    #     n_dims,
-    #     number_of_runs,
-    #     number_of_real_points,
-    #     number_of_train_points_vector,
-    #     number_of_test_points,
-    #     figure_title="Question 8: Protocol B",
-    #     figure_path=os.path.join(Q8_OUTPUT_FOLDER, "q8.png"),
-    # )
+    q8.all_parts(
+        k_values,
+        v,
+        n_dims,
+        number_of_runs,
+        number_of_real_points,
+        number_of_train_points_vector,
+        number_of_test_points,
+        figure_title="Question 8: Protocol B",
+        figure_path=os.path.join(Q8_OUTPUT_FOLDER, "q8.png"),
+    )
