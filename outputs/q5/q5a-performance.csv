@@ -1,0 +1,2 @@
+Model,Train Set MSE Mean,Train Set MSE Standard Deviation,Test Set MSE Mean,Test Set MSE Standard Deviation
+Kernel Ridge Regression,9.112799,0.0,20.238146,0.0

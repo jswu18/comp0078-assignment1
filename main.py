@@ -4,9 +4,9 @@ import jax
 import numpy as np
 import pandas as pd
 
-from src.constants import OUTPUTS_FOLDER
-from src.models.helpers import phi_polynomial, phi_sin, train_test_split
-from src.solutions import q1, q2_and_3, q4_and_5, q6, q7, q8
+from src.constants import OUTPUTS_FOLDER, DATA_FOLDER
+from src.models.helpers import phi_polynomial, phi_sin, split_train_test_data
+from src.solutions import q1, q2_and_3, q4, q5, q6, q7, q8
 
 if __name__ == "__main__":
     jax.config.update("jax_platform_name", "cpu")
@@ -118,48 +118,65 @@ if __name__ == "__main__":
         phi=phi_sin,
     )
 
-    # Question 4 and 5
+    df = pd.read_csv(os.path.join(DATA_FOLDER, "Boston-filtered.csv"))
+    feature_columns = list(df.columns[:-1])
+    target_column = df.columns[-1]
+
+    # Question 4
     Q4_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q4")
-    Q5_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q5")
-
-    if not os.path.exists(Q4_OUTPUT_FOLDER):
-        os.makedirs(Q4_OUTPUT_FOLDER)
-
-    if not os.path.exists(Q5_OUTPUT_FOLDER):
-        os.makedirs(Q5_OUTPUT_FOLDER)
-
-    data = pd.read_csv("data/Boston-filtered.csv")
-    x = np.array(data)
-    x, y = x[:, :-1], x[:, -1]
-    x_train, y_train, x_test, y_test = train_test_split(x, y, 2 / 3)
-
-    q4_and_5.all_parts(
-        x_train,
-        y_train,
-        data_columns=list(data.columns),  # type: ignore
-        figure_title_train="MSE Train",
-        figure_title_test="MSE Test",
-        figure_path_train=os.path.join(Q4_OUTPUT_FOLDER, "q4_train.png"),
-        figure_path_test=os.path.join(Q4_OUTPUT_FOLDER, "q4_test.png"),
-        gkrr_param_path=os.path.join(Q5_OUTPUT_FOLDER, "optimal_gkrr_parameters.csv"),
-        contour_path=os.path.join(Q5_OUTPUT_FOLDER, "contour_plot"),
-        report_path=os.path.join(Q5_OUTPUT_FOLDER, "regression_report.csv"),
-    )  # type: ignore
-
-    # Question 6
-    Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
-    if not os.path.exists(Q6_OUTPUT_FOLDER):
-        os.makedirs(Q6_OUTPUT_FOLDER)
-    number_of_points = 100
-    v = 3
-    n_dims = 2
-    q6.all_parts(
-        number_of_points,
-        v,
-        n_dims,
-        figure_title=f"Question 6: h_(S={number_of_points},{v=})",
-        figure_path=os.path.join(Q6_OUTPUT_FOLDER, "q6.png"),
+    train_percentage = 2 / 3
+    number_of_runs = 20
+    q4_performance_csv_path = os.path.join(Q4_OUTPUT_FOLDER, "performance.csv")
+    q4.all_parts(
+        df,
+        feature_columns,
+        target_column,
+        train_percentage,
+        number_of_runs,
+        performance_csv_path=q4_performance_csv_path,
     )
+
+    # Question 5
+    Q5_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q5")
+    train_percentage = 2 / 3
+    q5.abc(
+        df,
+        feature_columns,
+        target_column,
+        train_percentage,
+        number_of_folds=5,
+        gammas=np.array([2**x for x in list(range(-40, -26))]).reshape(-1, 1),
+        sigmas=2 ** np.arange(7, 13.5, 0.5).reshape(-1, 1),
+        performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5a-performance.csv"),
+        mse_figure_path=os.path.join(Q5_OUTPUT_FOLDER, "q5b-cross-valid-error.png"),
+    )
+    q5.d(
+        df,
+        feature_columns,
+        target_column,
+        train_percentage,
+        number_of_runs=20,
+        number_of_folds=5,
+        gammas=np.array([2**x for x in list(range(-40, -26))]).reshape(-1, 1),
+        sigmas=2 ** np.arange(7, 13.5, 0.5).reshape(-1, 1),
+        q4_performance_csv_path=q4_performance_csv_path,
+        performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5d-performance.csv"),
+    )
+
+    # # Question 6
+    # Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
+    # if not os.path.exists(Q6_OUTPUT_FOLDER):
+    #     os.makedirs(Q6_OUTPUT_FOLDER)
+    # number_of_points = 100
+    # v = 3
+    # n_dims = 2
+    # q6.all_parts(
+    #     number_of_points,
+    #     v,
+    #     n_dims,
+    #     figure_title=f"Question 6: h_(S={number_of_points},{v=})",
+    #     figure_path=os.path.join(Q6_OUTPUT_FOLDER, "q6.png"),
+    # )
 
     # Question 7
     # Q7_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q7")
