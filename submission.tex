@@ -72,27 +72,18 @@
                     \end{figure}
         \end{enumerate}
 \newpage
-        \item Plotting  the natural $\log$ ($\ln$) of the training error versus the polynomial dimension $k = 1, . . . , 18$:
+        \item[(b \& c)] Plotting the $\ln$ of the train and test error for a single trial of 1000 test points versus the polynomial dimension $k = 1, . . . , 18$:
             \begin{figure}[h]
             \centering
-            \includegraphics[scale=0.5]{outputs/q2/q2b}
-            \caption{Training Error of Polynomial Curves}
-            \label{fig:2b}
-            \end{figure}
-
-        \item Plotting the $\ln$ of the test error for a single trial of 1000 test points versus the polynomial dimension $k = 1, . . . , 18$:
-            \begin{figure}[h]
-            \centering
-            \includegraphics[scale=0.5]{outputs/q2/q2c}
-            \caption{Testing Error of Polynomial Curves (1 trial)}
+            \includegraphics[scale=0.5]{outputs/q2/q2bc}
+            \caption{Training and Testing Error of Polynomial Curves (1 trial)}
             \label{fig:2c}
             \end{figure}
-\newpage
-        \item Plotting the $\ln$ of the test error for 100 trials of 1000 test points versus the polynomial dimension $k = 1, . . . , 18$:
+        \item[(d)] Plotting the $\ln$ of the train and test error for 100 trials of 1000 test points versus the polynomial dimension $k = 1, . . . , 18$:
             \begin{figure}[h]
             \centering
             \includegraphics[scale=0.5]{outputs/q2/q2d}
-            \caption{Testing Error of Polynomial Curves (100 trials)}
+            \caption{Training and Testing Error of Polynomial Curves (100 trials)}
             \label{fig:2d}
             \end{figure}
     \end{enumerate}
@@ -100,75 +91,100 @@
 \item[3.] Repeating 2 (b-d) with $\sin$ basis functions:
             \begin{figure}[h]
             \centering
-            \includegraphics[scale=0.5]{outputs/q3/q3b}
-            \caption{Training Error of $\sin$ Curves}
+            \includegraphics[scale=0.5]{outputs/q3/q3bc}
+            \caption{Training and Testing Error of $\sin$ Curves}
             \label{fig:3b}
             \end{figure}
             \begin{figure}[h]
             \centering
-            \includegraphics[scale=0.5]{outputs/q3/q3c}
-            \caption{Testing Error of $\sin$ Curves (1 trial)}
-            \label{fig:3c}
-            \end{figure}
-            \begin{figure}[h]
-            \centering
             \includegraphics[scale=0.5]{outputs/q3/q3d}
-            \caption{Testing Error of $\sin$ Curves (100 trials)}
+            \caption{Testing and Testing Error of $\sin$ Curves (100 trials)}
             \label{fig:3d}
             \end{figure}
 \newpage
 \subsection{Filtered Boston housing and kernels}
     \item[4.]
     \begin{enumerate}
-        \item 
+        \item[(a)]
         We interpret the naive linear regression model using the existing framework for least squares regressors.\\
         Namely, we have:\\
         $w^* = (X^TX)^{-1}X^{T} y, X = (1,\dots,1)^{T} $\\
         \[\implies w* = m^{-1}  \sum_{i} 1*y_{i} = \bar{y}\]\\
         \[\implies f(x_{i}) = 1 \times w^{*} = \bar{y}\]\\
-        We split the data using our train test split function, and train naive, single and multiple linear regression models.
-            We repeat this 20 times and report the MSE on training and test sets.\\
+        Our model in this case is essentially always predicting the average housing price in the training data set.
+%        We split the data using our train test split function, and train naive, single and multiple linear regression models.
+%            We repeat this 20 times and report the MSE on training and test sets.\\
 
-        Here are the plots of training and test error:\\
-        \includegraphics[scale=0.5]{outputs/q4/q4_train.png}\\
-        \includegraphics[scale=0.5]{outputs/q4/q4_test.png}\\
+        \item[(b-d)] Here is a table of the training and test mean squared errors:\\
+        \begin{center}
+        \scalebox{0.8} {\begin{tabular}{c|c|c|c|c}%
+         \textbf{Model}&\textbf{Train Mean}&\textbf{Train St. Dev.}&\textbf{Test Mean} &\textbf{Test St. Dev.}% specify table head
+        \csvreader[head to column names]{outputs/q4/performance.csv}{}% use head of csv as column names
+        {\\\hline\csvcoli&\csvcolii&\csvcoliii&\csvcoliv&\csvcolv}% specify your coloumns here
+        \end{tabular}
+        }
+        \end{center}
     \end{enumerate}
 \newpage
 \subsection{Kernelised ridge regression}
 \item[5.]
-We fit our kernel ridge regressors for each parameter pair over 5 cross validation folds,
-and search for the pair minimising our mean squared error.\\
+%We fit our kernel ridge regressors for each parameter pair over 5 cross validation folds,
+%and search for the pair minimising our mean squared error.\\
 
-Here are the optimal parameters along with the minimal mean squared error:\\
+%Here are the optimal parameters along with the minimal mean squared error:\\
 
 
-\item The mean squared error for each fitted curve:
-\begin{center}
-\begin{tabular}{c|c|c}%
-\textbf{Gamma}&\textbf{Sigma}&\textbf{MSE}% specify table head
-\csvreader[head to column names]{outputs/q5/optimal_gkrr_parameters.csv}{}% use head of csv as column names
-{\\\hline\csvcoli&\csvcolii&\csvcoliii}% specify your coloumns here
-\end{tabular}
-\end{center}
+%The mean squared error for each fitted curve:
+%\begin{center}
+%\begin{tabular}{c|c|c}%
+%\textbf{Gamma}&\textbf{Sigma}&\textbf{MSE}% specify table head
+%\csvreader[head to column names]{outputs/q5/optimal_gkrr_parameters.csv}{}% use head of csv as column names
+%{\\\hline\csvcoli&\csvcolii&\csvcoliii}% specify your coloumns here
+%\end{tabular}
+%\end{center}
+%
+%\\
 
-\\
-Here is our contour plot for mse over our parameter grid:\\
+    \begin{enumerate}
+\item[(a)] The optimal parameters:
 
-\includegraphics[scale = 0.5]{outputs/q5/contour_plot.png}\\
+    \begin{center}
+    \scalebox{0.8} {\begin{tabular}{c|c|c|c|c}%
+     \textbf{Trial}&$\log_2(\sigma)$&$\log_2(\gamma)$ % specify table head
+    \csvreader[head to column names]{outputs/q5/q5a-optimal-params.csv}{}% use head of csv as column names
+    {\\\hline\csvcolii&\csvcoliii&\csvcoliv}% specify your coloumns here
+    \end{tabular}
+    }
+    \end{center}
 
-\item[5.]
+\item[(b)] Displaying the logarithm of the mean 5 fold mean squared error for different parameters for a single trial:\\
 
-Here is our final regression report over all oour models, run 20 times each.\\
+\begin{centering}
+\includegraphics[scale = 0.5]{outputs/q5/q5b-cross-valid-error}\\
+\end{centering}
+\item[(c)]The mean squared error for the training and test sets for the best $\gamma$ and $\sigma$ for a single trial:
+    \begin{center}
+    \scalebox{0.8} {\begin{tabular}{c|c|c|c|c}%
+     \textbf{Model}&\textbf{Train Mean}&\textbf{Test Mean} % specify table head
+    \csvreader[head to column names]{outputs/q5/q5c-performance.csv}{}% use head of csv as column names
+    {\\\hline\csvcoli&\csvcolii&\csvcoliv}% specify your coloumns here
+    \end{tabular}
+    }
+    \end{center}
 
-\item The mean squared error for each fitted curve:
-\begin{center}
-\begin{tabular}{c|c|c|c|c}%
-\textbd{model}&\textbf{train mse}&\textbf{train std}&\textbf{test mse}&\textbf{test std}% specify table head
-\csvreader[head to column names]{outputs/q5/regression_report.csv}{}% use head of csv as column names
-{\\\hline\csvcoli&\csvcolii&\csvcoliii&\csvcoliv&\csvcolv}% specify your coloumns here
-\end{tabular}
-\end{center}
 
+
+\item[(d)]The mean squared error for each fitted curve over 20 runs:
+        \begin{center}
+        \scalebox{0.8} {\begin{tabular}{c|c|c|c|c}%
+         \textbf{Model}&\textbf{Train Mean}&\textbf{Train St. Dev.}&\textbf{Test Mean} &\textbf{Test St. Dev.}% specify table head
+        \csvreader[head to column names]{outputs/q5/q5d-performance.csv}{}% use head of csv as column names
+        {\\\hline\csvcoli&\csvcolii&\csvcoliii&\csvcoliv&\csvcolv}% specify your coloumns here
+        \end{tabular}
+        }
+        \end{center}
+    \end{enumerate}
+\newpage
 \section{PART II}
 \subsection{$k$-Nearest Neighbors}
 \item[6.]Generating a random $h$:
@@ -248,17 +264,21 @@ Here is our final regression report over all oour models, run 20 times each.\\
          \{ \textbf{x}_{j}\}_{1:m} \in \mathcal{R}^{n}$s.t:\\
            $\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) < 0
         \square$
-    \item Using this kernel in our ridge regression, we arrive at the following prediction function:
-    \\
-    \[\hat{y}_{test} = lc + \sum_{i} \alpha_{i} x_{i} \cdot x_{test} \]
+    \item Using this kernel in our ridge regression, we note that as the value of c increases, the value of the kernel converges to a single value, c. More concretely, the 
+    kernel between any 2 datapoints becomes relatively uniform. We may infer from this that adding a constant in our kernel function has a regularising effect, as the model.\\
+    Expanding on this we demonstrate that we converge to naive linear regression in the limit:\\
 
-    where $\mathbf{\alpha} = ( K + \gamma l I_{l} + c 1_{nxn}) ^{-1} y_{train}$\\
-    Where $1_{nxn}$ is a matrix of all ones.\\
+    Note as $c \to \infty$, $K  = XX^T + C 1_{nxn} \to C 1_{nxn} = C 1_{n} 1_{n}^T$, where $1_{l,m}$ is an lxm dimensional vector a=of all ones. Note the similarity here with naive linear regression, where $X =1_{n}$.\\
+    
+    $\alpha = c^{-1} $leastsquares$(1_{nxn}, y_{train})$ (we no longer assume invertibility)\\
+    $\implies \hat{y}_{test} = c \alpha 1_{n_{train},n_{test}} = 1_{n_{train},n_{test}} $leastsquares$(1_{nxn}, y_{train})$\\
 
-    We note that as c becomes large, $\alpha \to 0$ and hence the predictions for $\hat{y}_{test}$ approach
-    the constant function $f(x) = lc$\\
-
-    Hence, adding c to our kernel acts like a regulariser in the limit.\\ 
+     Hence for our predictions, the constants C cancel out and we are left with the exact dual form of naive linear regression:\\
+     
+     $\alpha \prime = leastsquares$(1_{nxn}, y_{train}) = \overline{y}_{train}$\\
+     $y_{test} = \alpha \prime 1_{n_{train},n_{test}} = [\overline{y}_{train}]_{1:n_{train}}$
+    Hence,
+    Hence, adding c to our kernel acts like a regulariser.\\ 
 \end{enumerate}
 
 \newpage

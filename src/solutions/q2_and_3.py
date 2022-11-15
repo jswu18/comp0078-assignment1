@@ -23,6 +23,7 @@ def _g_noisy_samples(number_of_sample_points, sigma):
 def _calculate_mse(
     number_of_sample_points, sigma, number_test_points, number_of_trials, phi, bases
 ):
+    train_mse = np.zeros((number_of_trials, len(bases)))
     test_mse = np.zeros((number_of_trials, len(bases)))
 
     np.random.seed(DEFAULT_SEED)
@@ -40,10 +41,12 @@ def _calculate_mse(
             )
         for j, base in enumerate(weights_dict.keys()):
             x_test = np.random.uniform(low=0, high=1, size=(number_test_points, 1))
-            y_test_actual = _g(x_test)
+            y_test_actual = _g_sigma(x_test, sigma)
             y_test_prediction = np.dot(phi(x_test, base), weights_dict[base])
+            y_train_prediction = np.dot(phi(x_samples, base), weights_dict[base])
+            train_mse[i, j] = mean_squared_error(y_samples_noisy, y_train_prediction)
             test_mse[i, j] = mean_squared_error(y_test_actual, y_test_prediction)
-    return test_mse
+    return train_mse, test_mse
 
 
 def a_i(number_of_sample_points, sigma, figure_title, figure_path):
@@ -85,29 +88,7 @@ def a_ii(
     plt.savefig(figure_path)
 
 
-def b(number_of_sample_points, sigma, ks, figure_title, figure_path, phi):
-    weights = {}
-    x_samples, y_samples_noisy = _g_noisy_samples(number_of_sample_points, sigma)
-    for k in ks:
-        weights[k] = least_square_solution(phi(x_samples, k), y_samples_noisy)
-
-    mse_train = np.array(
-        [
-            mean_squared_error(y_samples_noisy, np.dot(phi(x_samples, k), weights[k]))
-            for k in ks
-        ]
-    )
-
-    plt.figure()
-    plt.plot(ks, np.log(mse_train))
-    plt.title(figure_title)
-    plt.xlabel("Number of Bases (k)")
-    plt.xticks(ks)
-    plt.ylabel("ln(MSE)")
-    plt.savefig(figure_path)
-
-
-def c_and_d(
+def bcd(
     number_of_sample_points,
     sigma,
     number_test_points,
@@ -117,7 +98,7 @@ def c_and_d(
     figure_path,
     phi,
 ):
-    test_mse = _calculate_mse(
+    train_mse, test_mse = _calculate_mse(
         number_of_sample_points,
         sigma,
         number_test_points,
@@ -126,9 +107,11 @@ def c_and_d(
         bases=ks,
     )
     plt.figure()
-    plt.plot(ks, np.log(np.mean(test_mse, axis=0)))
+    plt.plot(ks, np.log(np.mean(train_mse, axis=0)), label="Train MSE")
+    plt.plot(ks, np.log(np.mean(test_mse, axis=0)), label="Test MSE")
     plt.title(f"{figure_title} ({number_of_trials=})")
     plt.xlabel("Number of Bases (k)")
     plt.xticks(ks)
     plt.ylabel("ln(avg(MSE))")
+    plt.legend()
     plt.savefig(figure_path)

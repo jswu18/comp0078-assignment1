@@ -1,0 +1,15 @@
+Model,Train Set MSE Mean,Train Set MSE Standard Deviation,Test Set MSE Mean,Test Set MSE Standard Deviation
+Naive Regression,84.71,7.99,85.79,9.73
+Linear Regression (feature='CRIM'),69.0,7.31,74.26,9.83
+Linear Regression (feature=' ZN '),74.81,7.31,72.79,8.6
+Linear Regression (feature='INDUS '),65.15,4.08,63.51,6.75
+Linear Regression (feature='CHAS'),82.69,4.93,83.55,6.79
+Linear Regression (feature='NOX'),69.49,4.85,68.61,6.42
+Linear Regression (feature='RM'),42.13,5.15,46.32,6.96
+Linear Regression (feature='AGE'),75.14,6.8,69.54,6.31
+Linear Regression (feature='DIS'),79.69,7.65,80.13,11.38
+Linear Regression (feature='RAD'),71.44,6.28,72.9,5.98
+Linear Regression (feature='TAX'),66.54,5.56,64.89,7.24
+Linear Regression (feature='PTRATIO'),62.52,4.42,64.12,5.35
+Linear Regression (feature='LSTAT'),38.95,2.97,38.36,3.93
+Linear Regression (all features),21.53,2.47,25.79,4.1
