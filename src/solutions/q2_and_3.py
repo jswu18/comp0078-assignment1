@@ -41,7 +41,7 @@ def _calculate_mse(
             )
         for j, base in enumerate(weights_dict.keys()):
             x_test = np.random.uniform(low=0, high=1, size=(number_test_points, 1))
-            y_test_actual = _g(x_test)
+            y_test_actual = _g_sigma(x_test, sigma)
             y_test_prediction = np.dot(phi(x_test, base), weights_dict[base])
             y_train_prediction = np.dot(phi(x_samples, base), weights_dict[base])
             train_mse[i, j] = mean_squared_error(y_samples_noisy, y_train_prediction)
