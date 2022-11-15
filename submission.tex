@@ -105,7 +105,7 @@
 \subsection{Filtered Boston housing and kernels}
     \item[4.]
     \begin{enumerate}
-        \item[(a)]
+        \item[(b)]
         We interpret the naive linear regression model using the existing framework for least squares regressors.\\
         Namely, we have:\\
         $w^* = (X^TX)^{-1}X^{T} y, X = (1,\dots,1)^{T} $\\
@@ -115,7 +115,7 @@
 %        We split the data using our train test split function, and train naive, single and multiple linear regression models.
 %            We repeat this 20 times and report the MSE on training and test sets.\\
 
-        \item[(b-d)] Here is a table of the training and test mean squared errors:\\
+        \item[(a,c,d)] Here is a table of the training and test mean squared errors:\\
         \begin{center}
         \scalebox{0.8} {\begin{tabular}{c|c|c|c|c}%
          \textbf{Model}&\textbf{Train Mean}&\textbf{Train St. Dev.}&\textbf{Test Mean} &\textbf{Test St. Dev.}% specify table head
@@ -223,7 +223,7 @@
         \item k-nearest neighbours is a non-parametric model, so when queried with a test point for prediction, the number of training points within a given fixed radius of that test point increases as the number of training points increases.
         If we consider this fixed radius `sufficiently close' to make an informed prediction, the number of points within this radius will increase with more training points.
         So as the number of training points increases, the optimal k would increase to include more of the training points within this same fixed radius.
-        We can see in the plot above that we see this general trend as expected, however there is considerable noise in the trend and so a smoother plot would likely requires more runs.
+        We can see in the plot above that we see this general trend as expected, however there is some noise in the trend and so a smoother plot would likely requires more runs.
     \end{enumerate}
 \newpage
 \section{PART III}
@@ -231,11 +231,11 @@
 \item[9.] \begin{enumerate}
               \item let $K_{c}(\textbf{x},\textbf{z}) = c+ \sum_{i=1}^{n}x_{i}z_{i} = c + \textbf{x}^{T}\textbf{z}$\\
         Our function $K_{c}(\cdot, \cdot)$ is psd iff:\\
-        $\forall \{ u_{i} \}_{1:m} \in \mathcal{R}, {\textbf{x}_{j}\}_{1:m} \in \mathcal{R}^{n}$:
+        $\forall \{ u_{i} \}_{1:m} \in \mathcal{R}, {\{\textbf{x}_{j}\}_{1:m} \in \mathcal{R}^{n}$:
 
-        $\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) \ge 0 $\\
+        $\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{k},\textbf{x}_{l}) \ge 0 $\\
         We expand our kernel function to give: \\
-        \[\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) =  \sum_{n,m} cu_{n} u_{m} + \sum_{n,m} \langle\textbf{x}_{n}, \textbf{x}_{m}\rangle u_{n} u_{m}\]
+        \[\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{k},\textbf{x}_{l}) =  \sum_{n,m} cu_{n} u_{m} + \sum_{n,m} \langle\textbf{x}_{n}, \textbf{x}_{m}\rangle u_{n} u_{m}\]
 
         Here, we note that $\langle \cdot, \cdot \rangle$ is an inner product over the Hilbert space $\mathcal{R}^{n}$ and hence is psd by the representer theorem:
                 \begin{equation}
@@ -268,12 +268,12 @@
     kernel between any 2 datapoints becomes relatively uniform. We may infer from this that adding a constant in our kernel function has a regularising effect, as the model.\\
     Expanding on this we demonstrate that we converge to naive linear regression in the limit:\\
 
-    Note as $c \to \infty$, $K  = XX^T + C 1_{nxn} \to C 1_{nxn} = C 1_{n} 1_{n}^T$, where $1_{l,m}$ is an lxm dimensional vector a=of all ones. Note the similarity here with naive linear regression, where $X =1_{n}$.\\
+    Note as $c \to \infty$, $K  = XX^T + c 1_{nxn} \to c 1_{nxn} = c 1_{n} 1_{n}^T$, where $1_{l,m}$ is an lxm dimensional vector a=of all ones. Note the similarity here with naive linear regression, where $X =1_{n}$.\\
     
     $\alpha = c^{-1} $leastsquares$(1_{nxn}, y_{train})$ (we no longer assume invertibility)\\
     $\implies \hat{y}_{test} = c \alpha 1_{n_{train},n_{test}} = 1_{n_{train},n_{test}} $leastsquares$(1_{nxn}, y_{train})$\\
 
-     Hence for our predictions, the constants C cancel out and we are left with the exact dual form of naive linear regression:\\
+     Hence for our predictions, the constants c cancel out and we are left with the exact dual form of naive linear regression:\\
      
      $\alpha \prime = leastsquares$(1_{nxn}, y_{train}) = \overline{y}_{train}$\\
      $y_{test} = \alpha \prime 1_{n_{train},n_{test}} = [\overline{y}_{train}]_{1:n_{train}}$
@@ -324,9 +324,8 @@ We may consider each grid as an element of the space of square matrices over $\m
     \end{pmatrix}
     \\
     Since our operations on a grid are now simply the sum of matrices over a $\mathcal{F}_{2}$, it is now immediately obvious that our operations are commutative, by the commutativity of addition.\\
-    
     Further, since applying the same operation twice would be the same as applying the matrix twice in order, we can see that any operation applied twice would have the effect of applying no operation at all ( since $T_{ij} + T_{ij} = 0)$.\\
-    Hence, we conclude for $1 \le i,j \le n$, each operation is applied at most once. From this point, we note that there is no reason for our operations to be square matrices, as the only required properties of the space are those of a vector space (we make no use here of matrix multiplication). Hence, we may vectorise both our input grid and our operation matrices to get a set of vectors over $F_{2}^{n^2}$. We now index our operation vectors $t_i: i = 1, \dots, n^2$.\\
+    Hence, we conclude for $1 \le i,j \le n$, each operation is applied at most once. From this point, we note that there is no reason for our operations to be square matrices, as the only required properties of the space are those of a vector space (we make no use here of matrix multiplication). Hence, we may vectorise both our input grid and our operation matrices to get a set of vectors over $\mathcal{F}_{2}^{n^2}$. We now index our operation vectors $t_i: i = 1, \dots, n^2$.\\
     Let $x_{i} = \mathcal{I} [t_{i} $ is used $]$ be an indicator function representing whether $t_i$ is added to the input to get our blank grid.\\
     We observe that our problem is solvable for a given input grid G (now vectorised as a vector \textbf{g}) iff there exists a vector \textbf{x} $\in \mathrm{F}_{2}^{n^2}$ st:\\
     $\sum_{i} t_{i} x_{i} + \mathbf{g} = \mathbf{0}.$\\
@@ -335,8 +334,8 @@ We may consider each grid as an element of the space of square matrices over $\m
     Since every element is its own additive inverse over $\mathcal{F}_{2}$, we add $\mathbf{g}$ to both sides and arrive at the linear system $T \mathbf{x} = \mathbf{g}$.\\
     Since the matrix T may not be invertible in general, we perform gaussian elimination over $\mathcal{F}_{2}$, i.e create an augmented matrix $[T|\mathbf{g}]$ and reduce to row echelon form. If the problem is solvable, we will end up with a consistent (but perhaps underdetermined) reduced system of equations. If the input has no solution, the reduced system of equations will have some inconsistency in its variables: there will be some row of the reduced row echelon augmented matrix with all zeros to the left of the augmentation line, and a non-zero entry to the right of the augmentation line. \\
 
-    Finally, we make a note of the time complexity of this algorithm: the creation of our matrix T can be performed in $O(n^{4})$ since we have $n^2$ operation grids of size $n^{2}$. Further, gaussian elimination can be performed in $O(n^{3})$ operations in any field, and hence our total running time is $O(n^3)$. \\
-    
+    Finally, we make a note of the time complexity of this algorithm: the creation of our matrix T can be performed in $O(n^{4})$ since we have $n^2$ operation grids of size $n^{2}$. Further, gaussian elimination can be performed in $O(n^{3})$ operations in any field, and hence our total running time is $O(n^3)$.
+
     Once we have determined whether a grid configuration is solvable, it remains to find a valid solution. We note that if a solution exists, then a least squares solver should find it. This operation should take $O(n^3)$ operations.
 
 \end{enumerate}
