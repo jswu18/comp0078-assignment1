@@ -264,17 +264,21 @@
          \{ \textbf{x}_{j}\}_{1:m} \in \mathcal{R}^{n}$s.t:\\
            $\sum_{k,l} u_{k}u_{l}K_{c}(\textbf{x}_{u},\textbf{x}_{l}) < 0
         \square$
-    \item Using this kernel in our ridge regression, we arrive at the following prediction function:
-    \\
-    \[\hat{y}_{test} = lc + \sum_{i} \alpha_{i} x_{i} \cdot x_{test} \]
+    \item Using this kernel in our ridge regression, we note that as the value of c increases, the value of the kernel converges to a single value, c. More concretely, the 
+    kernel between any 2 datapoints becomes relatively uniform. We may infer from this that adding a constant in our kernel function has a regularising effect, as the model.\\
+    Expanding on this we demonstrate that we converge to naive linear regression in the limit:\\
 
-    where $\mathbf{\alpha} = ( K + \gamma l I_{l} + c 1_{nxn}) ^{-1} y_{train}$\\
-    Where $1_{nxn}$ is a matrix of all ones.\\
+    Note as $c \to \infty$, $K  = XX^T + C 1_{nxn} \to C 1_{nxn} = C 1_{n} 1_{n}^T$, where $1_{l,m}$ is an lxm dimensional vector a=of all ones. Note the similarity here with naive linear regression, where $X =1_{n}$.\\
+    
+    $\alpha = c^{-1} $leastsquares$(1_{nxn}, y_{train})$ (we no longer assume invertibility)\\
+    $\implies \hat{y}_{test} = c \alpha 1_{n_{train},n_{test}} = 1_{n_{train},n_{test}} $leastsquares$(1_{nxn}, y_{train})$\\
 
-    We note that as c becomes large, $\alpha \to 0$ and hence the predictions for $\hat{y}_{test}$ approach
-    the constant function $f(x) = lc$\\
-
-    Hence, adding c to our kernel acts like a regulariser in the limit.\\ 
+     Hence for our predictions, the constants C cancel out and we are left with the exact dual form of naive linear regression:\\
+     
+     $\alpha \prime = leastsquares$(1_{nxn}, y_{train}) = \overline{y}_{train}$\\
+     $y_{test} = \alpha \prime 1_{n_{train},n_{test}} = [\overline{y}_{train}]_{1:n_{train}}$
+    Hence,
+    Hence, adding c to our kernel acts like a regulariser.\\ 
 \end{enumerate}
 
 \newpage
