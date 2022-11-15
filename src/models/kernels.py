@@ -21,3 +21,12 @@ class GaussianKernel(Kernel):
 
     def k(self, x, y):
         return jnp.exp(-((x - y).T @ (x - y)) / (2 * (self.sigma**2)))
+
+
+class LinearKernel(Kernel):
+    def __init__(self, c):
+        self.c = c
+
+    def k(self, x, y):
+        return self.c + x@y
+
