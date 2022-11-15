@@ -71,9 +71,9 @@ class KernelRidgeRegression(Regression):
 
     def fit(self, x: np.ndarray, y: np.ndarray) -> None:
         self.x_train = x
-        self.w = np.linalg.solve(
-            self.compute_k_regularised(x, self.kernel, self.gamma), y
-        )
+        self.w = np.linalg.inv(
+            self.compute_k_regularised(x, self.kernel, self.gamma)
+        )@y
 
     def predict(self, x):
         return self.kernel.compute_gram(x, self.x_train) @ self.w

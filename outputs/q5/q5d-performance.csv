@@ -13,4 +13,4 @@ Linear Regression (feature='TAX'),66.54,5.56,64.89,7.24
 Linear Regression (feature='PTRATIO'),62.52,4.42,64.12,5.35
 Linear Regression (feature='LSTAT'),38.95,2.97,38.36,3.93
 Linear Regression (all features),21.53,2.47,25.79,4.1
-Kernel Ridge Regression,8.77,3.69,15.18,2.91
+Kernel Ridge Regression,7.38,1.68,14.19,2.05

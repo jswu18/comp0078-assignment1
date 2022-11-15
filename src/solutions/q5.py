@@ -35,9 +35,9 @@ def _compute_model_performance(train_test_data: TrainTestData, gamma, sigma):
 
 def find_optimal_parameters(x, y, number_of_folds, log_2_gammas, log_2_sigmas):
     mses = np.zeros((len(log_2_sigmas), len(log_2_gammas), number_of_folds))
+    folds = make_folds(x, y, number_of_folds)
     for i, log_2_sigma in enumerate(log_2_sigmas):
         for j, log_2_gamma in enumerate(log_2_gammas):
-            folds = make_folds(x, y, number_of_folds)
             kernel = GaussianKernel(sigma=2.0**log_2_sigma)
             model = KernelRidgeRegression(kernel, 2.0**log_2_gamma)
             for k, fold in enumerate(folds):

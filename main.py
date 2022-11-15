@@ -10,6 +10,7 @@ from src.solutions import q1, q2_and_3, q4, q5, q6, q7, q8
 
 if __name__ == "__main__":
     jax.config.update("jax_platform_name", "cpu")
+    jax.config.update("jax_enable_x64", True)
 
     if not os.path.exists(OUTPUTS_FOLDER):
         os.makedirs(OUTPUTS_FOLDER)
@@ -153,20 +154,20 @@ if __name__ == "__main__":
         performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5d-performance.csv"),
     )
 
-    # Question 6
-    Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
-    if not os.path.exists(Q6_OUTPUT_FOLDER):
-        os.makedirs(Q6_OUTPUT_FOLDER)
-    number_of_points = 100
-    v = 3
-    n_dims = 2
-    q6.all_parts(
-        number_of_points,
-        v,
-        n_dims,
-        figure_title=f"Question 6: h_(S={number_of_points},{v=})",
-        figure_path=os.path.join(Q6_OUTPUT_FOLDER, "q6.png"),
-    )
+    # # Question 6
+    # Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")
+    # if not os.path.exists(Q6_OUTPUT_FOLDER):
+    #     os.makedirs(Q6_OUTPUT_FOLDER)
+    # number_of_points = 100
+    # v = 3
+    # n_dims = 2
+    # q6.all_parts(
+    #     number_of_points,
+    #     v,
+    #     n_dims,
+    #     figure_title=f"Question 6: h_(S={number_of_points},{v=})",
+    #     figure_path=os.path.join(Q6_OUTPUT_FOLDER, "q6.png"),
+    # )
 
     # # Question 7
     # Q7_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q7")

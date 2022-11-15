@@ -10,9 +10,11 @@ class Kernel(ABC):
         pass
 
     def compute_gram(self, x, y):
-        return vmap(lambda x_i: vmap(lambda y_i: self.k(x_i, y_i))(y))(x).reshape(
-            x.shape[0], y.shape[0]
-        )
+        return vmap(
+            lambda x_i: vmap(
+                lambda y_i: self.k(x_i, y_i)
+            )(y)
+        )(x)
 
 
 class GaussianKernel(Kernel):
