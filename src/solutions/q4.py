@@ -37,10 +37,10 @@ def _compute_naive_performance(x, y, train_percentage: float, number_of_runs: in
         data=[
             [
                 "Naive Regression",
-                np.mean(train_mses),
-                np.std(train_mses),
-                np.mean(test_mses),
-                np.std(test_mses),
+                np.round(np.mean(train_mses), 2),
+                np.round(np.std(train_mses), 2),
+                np.round(np.mean(test_mses), 2),
+                np.round(np.std(test_mses), 2),
             ]
         ],
         columns=PERFORMANCE_COLUMN_NAMES,
@@ -70,10 +70,10 @@ def _compute_linear_performance(
         data=[
             [
                 model_name,
-                np.mean(train_mses),
-                np.std(train_mses),
-                np.mean(test_mses),
-                np.std(test_mses),
+                np.round(np.mean(train_mses), 2),
+                np.round(np.std(train_mses), 2),
+                np.round(np.mean(test_mses), 2),
+                np.round(np.std(test_mses), 2),
             ]
         ],
         columns=PERFORMANCE_COLUMN_NAMES,

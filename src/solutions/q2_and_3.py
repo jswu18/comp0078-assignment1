@@ -88,29 +88,7 @@ def a_ii(
     plt.savefig(figure_path)
 
 
-def b(number_of_sample_points, sigma, ks, figure_title, figure_path, phi):
-    weights = {}
-    x_samples, y_samples_noisy = _g_noisy_samples(number_of_sample_points, sigma)
-    for k in ks:
-        weights[k] = least_square_solution(phi(x_samples, k), y_samples_noisy)
-
-    mse_train = np.array(
-        [
-            mean_squared_error(y_samples_noisy, np.dot(phi(x_samples, k), weights[k]))
-            for k in ks
-        ]
-    )
-
-    plt.figure()
-    plt.plot(ks, np.log(mse_train))
-    plt.title(figure_title)
-    plt.xlabel("Number of Bases (k)")
-    plt.xticks(ks)
-    plt.ylabel("ln(MSE)")
-    plt.savefig(figure_path)
-
-
-def c_and_d(
+def bcd(
     number_of_sample_points,
     sigma,
     number_test_points,

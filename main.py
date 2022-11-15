@@ -4,7 +4,7 @@ import jax
 import numpy as np
 import pandas as pd
 
-from src.constants import OUTPUTS_FOLDER, DATA_FOLDER
+from src.constants import OUTPUTS_FOLDER, DATA_FOLDER, DEFAULT_SEED
 from src.models.helpers import phi_polynomial, phi_sin, split_train_test_data
 from src.solutions import q1, q2_and_3, q4, q5, q6, q7, q8
 
@@ -26,7 +26,7 @@ if __name__ == "__main__":
         x,
         y,
         ks,
-        figure_title="Question 1a: Regression",
+        figure_title="Regression",
         figure_path=os.path.join(Q1_OUTPUT_FOLDER, "q1a.png"),
     )
     q1.b(x, y, ks, table_path=os.path.join(Q1_OUTPUT_FOLDER, "q1b.csv"))
@@ -42,41 +42,33 @@ if __name__ == "__main__":
     q2_and_3.a_i(
         number_of_sample_points,
         sigma,
-        figure_title="Question 2ai: Noisy Samples",
+        figure_title="Noisy Samples",
         figure_path=os.path.join(Q2_OUTPUT_FOLDER, "q2ai.png"),
     )
     q2_and_3.a_ii(
         number_of_sample_points,
         sigma,
         ks,
-        figure_title="Question 2aii: Regression with Polynomial Basis",
+        figure_title="Regression with Polynomial Basis",
         figure_path=os.path.join(Q2_OUTPUT_FOLDER, "q2aii.png"),
     )
-    q2_and_3.b(
-        number_of_sample_points,
-        sigma,
-        ks=np.arange(1, 19),
-        figure_title="Question 2b: Training Error vs Polynomial Dimension",
-        figure_path=os.path.join(Q2_OUTPUT_FOLDER, "q2b.png"),
-        phi=phi_polynomial,
-    )
-    q2_and_3.c_and_d(
+    q2_and_3.bcd(
         number_of_sample_points,
         sigma,
         ks=np.arange(1, 19),
         number_test_points=1000,
         number_of_trials=1,
-        figure_title="Question 2c: Test Error",
-        figure_path=os.path.join(Q2_OUTPUT_FOLDER, "q2c.png"),
+        figure_title="Error vs Polynomial Dimension",
+        figure_path=os.path.join(Q2_OUTPUT_FOLDER, "q2bc.png"),
         phi=phi_polynomial,
     )
-    q2_and_3.c_and_d(
+    q2_and_3.bcd(
         number_of_sample_points,
         sigma,
         ks=np.arange(1, 19),
         number_test_points=1000,
         number_of_trials=100,
-        figure_title="Question 2d: Test Error",
+        figure_title="TError vs Polynomial Dimension",
         figure_path=os.path.join(Q2_OUTPUT_FOLDER, "q2d.png"),
         phi=phi_polynomial,
     )
@@ -89,31 +81,23 @@ if __name__ == "__main__":
     number_of_sample_points = 30
     sigma = 0.07
     ks = np.arange(1, 19)
-    q2_and_3.b(
-        number_of_sample_points,
-        sigma,
-        ks=np.arange(1, 19),
-        figure_title="Question 3b: Training Error vs Polynomial Dimension",
-        figure_path=os.path.join(Q3_OUTPUT_FOLDER, "q3b.png"),
-        phi=phi_sin,
-    )
-    q2_and_3.c_and_d(
+    q2_and_3.bcd(
         number_of_sample_points,
         sigma,
         ks=np.arange(1, 19),
         number_test_points=1000,
         number_of_trials=1,
-        figure_title="Question 3c: Test Error",
-        figure_path=os.path.join(Q3_OUTPUT_FOLDER, "q3c.png"),
+        figure_title="Error vs Number of Sin Bases",
+        figure_path=os.path.join(Q3_OUTPUT_FOLDER, "q3bc.png"),
         phi=phi_sin,
     )
-    q2_and_3.c_and_d(
+    q2_and_3.bcd(
         number_of_sample_points,
         sigma,
         ks=np.arange(1, 19),
         number_test_points=1000,
         number_of_trials=100,
-        figure_title="Question 2d: Test Error",
+        figure_title="Error vs Number of Sin Bases",
         figure_path=os.path.join(Q3_OUTPUT_FOLDER, "q3d.png"),
         phi=phi_sin,
     )
@@ -123,6 +107,7 @@ if __name__ == "__main__":
     target_column = df.columns[-1]
 
     # Question 4
+    np.random.seed(DEFAULT_SEED)
     Q4_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q4")
     train_percentage = 2 / 3
     number_of_runs = 20
@@ -137,6 +122,7 @@ if __name__ == "__main__":
     )
 
     # Question 5
+    np.random.seed(DEFAULT_SEED)
     Q5_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q5")
     train_percentage = 2 / 3
     q5.abc(
@@ -145,23 +131,26 @@ if __name__ == "__main__":
         target_column,
         train_percentage,
         number_of_folds=5,
-        gammas=np.array([2**x for x in list(range(-40, -26))]).reshape(-1, 1),
-        sigmas=2 ** np.arange(7, 13.5, 0.5).reshape(-1, 1),
-        performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5a-performance.csv"),
+        log_2_gammas=np.arange(-40, -25),
+        log_2_sigmas=np.arange(7, 13.5, 0.5),
+        optimal_params_csv_path=os.path.join(
+            Q5_OUTPUT_FOLDER, "q5a-optimal-params.csv"
+        ),
+        performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5c-performance.csv"),
         mse_figure_path=os.path.join(Q5_OUTPUT_FOLDER, "q5b-cross-valid-error.png"),
     )
-    q5.d(
-        df,
-        feature_columns,
-        target_column,
-        train_percentage,
-        number_of_runs=20,
-        number_of_folds=5,
-        gammas=np.array([2**x for x in list(range(-40, -26))]).reshape(-1, 1),
-        sigmas=2 ** np.arange(7, 13.5, 0.5).reshape(-1, 1),
-        q4_performance_csv_path=q4_performance_csv_path,
-        performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5d-performance.csv"),
-    )
+    # q5.d(
+    #     df,
+    #     feature_columns,
+    #     target_column,
+    #     train_percentage,
+    #     number_of_runs=20,
+    #     number_of_folds=5,
+    #     log_2_gammas=np.arange(-40, -25),
+    #     log_2_sigmas=np.arange(7, 13.5, 0.5),
+    #     q4_performance_csv_path=q4_performance_csv_path,
+    #     performance_csv_path=os.path.join(Q5_OUTPUT_FOLDER, "q5d-performance.csv"),
+    # )
 
     # # Question 6
     # Q6_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, "q6")

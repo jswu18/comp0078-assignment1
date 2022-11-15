@@ -12,6 +12,7 @@ __pycache__
 /**/*ipynb_checkpoints
 .DS_Store
 notebooks/.DS_Store
+*.ipynb
 
 # Other Latex outputs
 *.log

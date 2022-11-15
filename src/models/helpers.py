@@ -56,4 +56,3 @@ def phi_sin(x: np.ndarray, k: int):
 
 def mean_squared_error(y_actual: np.ndarray, y_predicted: np.ndarray):
     return np.mean((y_actual - y_predicted) ** 2)
-
